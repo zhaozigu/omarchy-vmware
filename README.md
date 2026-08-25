@@ -8,15 +8,29 @@ broken theme previews, and LibreOffice display problems.
 > on a real computer with supported graphics hardware. These fixes may make a
 > VMware installation more usable, but they cannot fix every graphics problem.
 
-## Install from a local copy
+## Install
+
+Install the latest version from GitHub:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/zhaozigu/omarchy-vmware/main/install.sh | bash
+```
+
+After installation, check your system:
+
+```bash
+omarchy-vmware doctor
+```
+
+The installer does not use `sudo` and does not turn on any fix automatically.
+
+### Install from a local copy
 
 Open a terminal in this project folder and run:
 
 ```bash
 ./install.sh
 ```
-
-The installer does not use `sudo` and does not turn on any fix automatically.
 
 ## Use
 
