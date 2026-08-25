@@ -53,10 +53,11 @@ omarchy-vmware fix --all
 ```
 
 This checks the environment and current fixes, updates Omarchy and the system,
-installs Open VM Tools, applies every relevant missing fix, and restarts the
-system after all steps succeed. LibreOffice integration is skipped when
-LibreOffice with GTK 3 support is not installed. If any step fails, the command
-stops and does not restart the system.
+installs Open VM Tools, and applies every relevant missing fix. The system
+restarts after all steps succeed only when a package or repair change was made;
+if everything was already up to date, the restart is skipped. LibreOffice
+integration is skipped when LibreOffice with GTK 3 support is not installed. If
+any step fails, the command stops and does not restart the system.
 
 Turn the main desktop fix on or off:
 
