@@ -13,6 +13,14 @@ readonly OVM_CURSOR_END='-- END omarchy-vmware cursor'
 readonly OVM_CURSOR_SETTING='hl.config({ cursor = { no_hardware_cursors = 1, invisible = false } })'
 readonly OVM_LIBREOFFICE_MARKER='X-Omarchy-VMware-LibreOffice-Wayland=true'
 
+ovm_run_as_root() {
+  if (( EUID == 0 )); then
+    "$@"
+  else
+    sudo "$@"
+  fi
+}
+
 ovm_bar_toggle_file() {
   printf '%s/omarchy/toggles/bar-off\n' "${XDG_STATE_HOME:-$HOME/.local/state}"
 }

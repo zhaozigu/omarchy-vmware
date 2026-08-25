@@ -39,6 +39,7 @@ chmod +x -- "$data_dir/fixes/theme-preview/"*.sh
 chmod +x -- "$data_dir/fixes/libreoffice/"*.sh
 chmod +x -- "$data_dir/fixes/top-bar/"*.sh
 chmod +x -- "$data_dir/tools/vm-tools/install.sh"
+chmod +x -- "$data_dir/tools/fix-all/run.sh"
 ln -sfn -- "$data_dir/bin/omarchy-vmware" "$bin_dir/omarchy-vmware"
 
 printf '\nomarchy-vmware was installed successfully.\n'

@@ -15,14 +15,6 @@ if ! command -v pacman >/dev/null 2>&1; then
   exit 1
 fi
 
-ovm_run_as_root() {
-  if (( EUID == 0 )); then
-    "$@"
-  else
-    sudo "$@"
-  fi
-}
-
 if pacman -Q open-vm-tools >/dev/null 2>&1; then
   printf 'Open VM Tools is already installed.\n'
 else

@@ -12,6 +12,7 @@ Usage:
   omarchy-vmware {doctor|apply|revert|status}
   omarchy-vmware {bar|cursor|preview|libreoffice} {apply|revert|status}
   omarchy-vmware vm-tools install
+  omarchy-vmware fix --all
 EOF
 }
 
@@ -54,6 +55,13 @@ libreoffice_fix() {
 vm_tools() {
   case "${1:-}" in
     install) source "$project_root/tools/vm-tools/install.sh" ;;
+    *) usage >&2; exit 2 ;;
+  esac
+}
+
+complete_fix() {
+  case "${1:-}" in
+    --all) source "$project_root/tools/fix-all/run.sh" ;;
     *) usage >&2; exit 2 ;;
   esac
 }
@@ -103,6 +111,7 @@ case "${1:-}" in
   preview) preview "${2:-}" ;;
   libreoffice) libreoffice_fix "${2:-}" ;;
   vm-tools) vm_tools "${2:-}" ;;
+  fix) complete_fix "${2:-}" ;;
   -h|--help|help) usage ;;
   *) usage >&2; exit 2 ;;
 esac

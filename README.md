@@ -46,6 +46,18 @@ First, check your system:
 omarchy-vmware doctor
 ```
 
+Run the complete repair in one command:
+
+```bash
+omarchy-vmware fix --all
+```
+
+This checks the environment and current fixes, updates Omarchy and the system,
+installs Open VM Tools, applies every relevant missing fix, and restarts the
+system after all steps succeed. LibreOffice integration is skipped when
+LibreOffice with GTK 3 support is not installed. If any step fails, the command
+stops and does not restart the system.
+
 Turn the main desktop fix on or off:
 
 ```bash
