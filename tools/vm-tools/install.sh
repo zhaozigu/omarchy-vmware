@@ -10,6 +10,11 @@ if ! command -v omarchy >/dev/null 2>&1; then
   exit 1
 fi
 
+if ! command -v pacman >/dev/null 2>&1; then
+  printf 'The pacman package manager is required to install open-vm-tools.\n' >&2
+  exit 1
+fi
+
 ovm_run_as_root() {
   if (( EUID == 0 )); then
     "$@"
@@ -18,8 +23,25 @@ ovm_run_as_root() {
   fi
 }
 
-printf 'Installing open-vm-tools...\n'
-omarchy pkg add open-vm-tools
+if pacman -Q open-vm-tools >/dev/null 2>&1; then
+  printf 'Open VM Tools is already installed.\n'
+else
+  if ! pacman -Si open-vm-tools >/dev/null 2>&1; then
+    cat >&2 <<'EOF'
+Open VM Tools is not available in your current package database.
+
+Update Omarchy first:
+  omarchy update
+
+After the update finishes, retry:
+  omarchy-vmware vm-tools install
+EOF
+    exit 1
+  fi
+
+  printf 'Installing open-vm-tools...\n'
+  omarchy pkg add open-vm-tools
+fi
 
 for unit in vmtoolsd.service vmware-vmblock-fuse.service; do
   if ! systemctl list-unit-files --no-legend "$unit" 2>/dev/null | grep -q "^$unit"; then

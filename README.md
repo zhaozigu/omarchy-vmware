@@ -105,7 +105,9 @@ omarchy-vmware vm-tools install
 
 Run this command in a normal terminal. It installs system packages and starts
 services, so it may ask for your `sudo` password. The command will not run
-outside VMware.
+outside VMware. If `open-vm-tools` is not available in the current package
+database, the command will ask you to run `omarchy update` first and show the
+command to retry afterward.
 
 ## Limits
 
