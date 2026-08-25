@@ -32,6 +32,7 @@ fi
 printf 'Omarchy VMware complete repair\n'
 printf 'The system will restart after all steps complete successfully.\n\n'
 printf 'Detected repair plan\n'
+ovm_vm_tools_ready && printf '  [✓] Open VM Tools already installed and running\n' || printf '  [ ] Install or activate Open VM Tools\n'
 ovm_has_fix && printf '  [✓] Desktop rendering fix already enabled\n' || printf '  [ ] Enable desktop rendering fix\n'
 ovm_has_cursor_fix && printf '  [✓] Software cursor already enabled\n' || printf '  [ ] Enable software cursor\n'
 ovm_bar_is_hidden && printf '  [ ] Enable the Omarchy top bar\n' || printf '  [✓] Omarchy top bar already enabled\n'
@@ -46,7 +47,7 @@ printf '\n'
 printf '[1/8] Updating Omarchy and system packages...\n'
 omarchy update
 
-printf '\n[2/8] Installing and enabling Open VM Tools...\n'
+printf '\n[2/8] Checking Open VM Tools...\n'
 source "$project_root/tools/vm-tools/install.sh"
 
 printf '\n[3/8] Checking desktop rendering...\n'

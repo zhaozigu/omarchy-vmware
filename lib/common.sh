@@ -21,6 +21,19 @@ ovm_run_as_root() {
   fi
 }
 
+ovm_vm_tools_ready() {
+  local unit
+
+  command -v pacman >/dev/null 2>&1 || return 1
+  command -v systemctl >/dev/null 2>&1 || return 1
+  pacman -Q open-vm-tools >/dev/null 2>&1 || return 1
+
+  for unit in vmtoolsd.service vmware-vmblock-fuse.service; do
+    systemctl is-enabled --quiet "$unit" 2>/dev/null || return 1
+    systemctl is-active --quiet "$unit" 2>/dev/null || return 1
+  done
+}
+
 ovm_bar_toggle_file() {
   printf '%s/omarchy/toggles/bar-off\n' "${XDG_STATE_HOME:-$HOME/.local/state}"
 }
