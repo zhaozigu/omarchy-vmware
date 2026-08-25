@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_path="$(readlink -f -- "${BASH_SOURCE[0]}")"
+project_root="$(cd -- "$(dirname -- "$script_path")/.." && pwd)"
+source "$project_root/lib/common.sh"
+source "$project_root/lib/detect.sh"
+
+usage() {
+  printf 'Usage: omarchy-vmware {doctor|apply|revert|status|bar|cursor|preview|libreoffice} [apply|revert|status]\n'
+}
+
+bar() {
+  case "${1:-}" in
+    apply) source "$project_root/fixes/top-bar/apply.sh" ;;
+    revert) source "$project_root/fixes/top-bar/revert.sh" ;;
+    status) source "$project_root/fixes/top-bar/check.sh" ;;
+    *) usage >&2; exit 2 ;;
+  esac
+}
+
+cursor() {
+  case "${1:-}" in
+    apply) source "$project_root/fixes/mouse-cursor/apply.sh" ;;
+    revert) source "$project_root/fixes/mouse-cursor/revert.sh" ;;
+    status) source "$project_root/fixes/mouse-cursor/check.sh" ;;
+    *) usage >&2; exit 2 ;;
+  esac
+}
+
+preview() {
+  case "${1:-}" in
+    apply) source "$project_root/fixes/theme-preview/apply.sh" ;;
+    revert) source "$project_root/fixes/theme-preview/revert.sh" ;;
+    status) source "$project_root/fixes/theme-preview/check.sh" ;;
+    *) usage >&2; exit 2 ;;
+  esac
+}
+
+libreoffice_fix() {
+  case "${1:-}" in
+    apply) source "$project_root/fixes/libreoffice/apply.sh" ;;
+    revert) source "$project_root/fixes/libreoffice/revert.sh" ;;
+    status) source "$project_root/fixes/libreoffice/check.sh" ;;
+    *) usage >&2; exit 2 ;;
+  esac
+}
+
+doctor() {
+  local error=''
+  error="$(ovm_recent_desktop_errors || true)"
+  printf 'Omarchy VMware Compatibility Tool\n\n'
+  printf 'Environment\n'
+  printf '  Virtualization : %s\n' "$(ovm_virtualization)"
+  printf '  GPU            : %s\n' "$(ovm_gpu)"
+  printf '  Kernel driver  : %s\n' "$(ovm_vmwgfx_state)"
+  printf '  Compositor     : %s\n' "$(ovm_hyprland_state)"
+  printf '  Omarchy        : %s\n' "$(ovm_has_omarchy && printf 'detected' || printf 'not detected')"
+  printf '\nDesktop shell\n'
+  if pgrep -x quickshell >/dev/null 2>&1; then
+    printf '  [✓] Omarchy shell is running\n'
+  elif [[ -n "$error" ]]; then
+    printf '  [!] Desktop graphics failure detected\n'
+    printf '      %s\n' "$error"
+  else
+    printf '  [ ] No relevant recent errors found\n'
+  fi
+  printf '\nRecommended fix\n'
+  if ovm_has_fix; then
+    printf '  Qt Quick software rendering is enabled\n'
+  elif ovm_is_vmware; then
+    printf '  Enable Qt Quick software rendering\n'
+  else
+    printf '  None: this tool only applies to VMware\n'
+  fi
+  printf '\nMouse cursor\n'
+  if ovm_has_cursor_fix; then
+    printf '  Software cursor rendering is enabled\n'
+  elif ovm_is_vmware; then
+    printf '  If the pointer is invisible, run: omarchy-vmware cursor apply\n'
+  fi
+}
+
+case "${1:-}" in
+  doctor) doctor ;;
+  apply) source "$project_root/fixes/desktop-black-screen/apply.sh" ;;
+  revert) source "$project_root/fixes/desktop-black-screen/revert.sh" ;;
+  status) source "$project_root/fixes/desktop-black-screen/check.sh" ;;
+  bar) bar "${2:-}" ;;
+  cursor) cursor "${2:-}" ;;
+  preview) preview "${2:-}" ;;
+  libreoffice) libreoffice_fix "${2:-}" ;;
+  -h|--help|help) usage ;;
+  *) usage >&2; exit 2 ;;
+esac
