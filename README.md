@@ -8,6 +8,12 @@ broken theme previews, and LibreOffice display problems.
 > on a real computer with supported graphics hardware. These fixes may make a
 > VMware installation more usable, but they cannot fix every graphics problem.
 
+## Before You Start
+
+Make sure 3D graphics acceleration is enabled for the virtual machine. In its
+VMware settings, go to **Display** and check **Accelerate 3D graphics** if it
+is not already enabled.
+
 ## Install
 
 Install the latest version from GitHub:
