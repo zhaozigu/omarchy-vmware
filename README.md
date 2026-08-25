@@ -100,11 +100,11 @@ The tool only changes settings that it manages. It does not change files in
 Open VM Tools is optional. To install it, run:
 
 ```bash
-./scripts/install-open-vm-tools.sh
+omarchy-vmware vm-tools install
 ```
 
 Run this command in a normal terminal. It installs system packages and starts
-services, so it may ask for your `sudo` password. The script will not run
+services, so it may ask for your `sudo` password. The command will not run
 outside VMware.
 
 ## Limits

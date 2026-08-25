@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-set -euo pipefail
 
-if [[ "$(systemd-detect-virt 2>/dev/null || true)" != "vmware" ]]; then
+if ! ovm_is_vmware; then
   printf 'Refusing to install: VMware virtualization was not detected.\n' >&2
   exit 1
 fi
@@ -11,7 +10,7 @@ if ! command -v omarchy >/dev/null 2>&1; then
   exit 1
 fi
 
-run_as_root() {
+ovm_run_as_root() {
   if (( EUID == 0 )); then
     "$@"
   else
@@ -30,14 +29,14 @@ for unit in vmtoolsd.service vmware-vmblock-fuse.service; do
 done
 
 printf 'Enabling and starting VMware Tools services...\n'
-run_as_root systemctl enable --now vmtoolsd.service vmware-vmblock-fuse.service
+ovm_run_as_root systemctl enable --now vmtoolsd.service vmware-vmblock-fuse.service
 
 for unit in vmtoolsd.service vmware-vmblock-fuse.service; do
   if systemctl is-active --quiet "$unit"; then
     printf '  [✓] %s is active\n' "$unit"
   else
     printf '  [!] %s failed to start\n' "$unit" >&2
-    run_as_root systemctl status --no-pager "$unit" >&2 || true
+    ovm_run_as_root systemctl status --no-pager "$unit" >&2 || true
     exit 1
   fi
 done

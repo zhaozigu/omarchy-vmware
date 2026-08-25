@@ -7,7 +7,12 @@ source "$project_root/lib/common.sh"
 source "$project_root/lib/detect.sh"
 
 usage() {
-  printf 'Usage: omarchy-vmware {doctor|apply|revert|status|bar|cursor|preview|libreoffice} [apply|revert|status]\n'
+  cat <<'EOF'
+Usage:
+  omarchy-vmware {doctor|apply|revert|status}
+  omarchy-vmware {bar|cursor|preview|libreoffice} {apply|revert|status}
+  omarchy-vmware vm-tools install
+EOF
 }
 
 bar() {
@@ -42,6 +47,13 @@ libreoffice_fix() {
     apply) source "$project_root/fixes/libreoffice/apply.sh" ;;
     revert) source "$project_root/fixes/libreoffice/revert.sh" ;;
     status) source "$project_root/fixes/libreoffice/check.sh" ;;
+    *) usage >&2; exit 2 ;;
+  esac
+}
+
+vm_tools() {
+  case "${1:-}" in
+    install) source "$project_root/tools/vm-tools/install.sh" ;;
     *) usage >&2; exit 2 ;;
   esac
 }
@@ -90,6 +102,7 @@ case "${1:-}" in
   cursor) cursor "${2:-}" ;;
   preview) preview "${2:-}" ;;
   libreoffice) libreoffice_fix "${2:-}" ;;
+  vm-tools) vm_tools "${2:-}" ;;
   -h|--help|help) usage ;;
   *) usage >&2; exit 2 ;;
 esac

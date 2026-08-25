@@ -23,7 +23,9 @@ else
 fi
 
 mkdir -p -- "$data_dir" "$bin_dir"
-for item in bin lib fixes scripts LICENSE README.md; do
+# Remove the legacy standalone script directory from earlier installations.
+rm -rf -- "$data_dir/scripts"
+for item in bin lib fixes tools LICENSE README.md; do
   rm -rf -- "$data_dir/$item"
   cp -R -- "$source_dir/$item" "$data_dir/$item"
 done
@@ -32,7 +34,7 @@ chmod +x -- "$data_dir/fixes/mouse-cursor/"*.sh
 chmod +x -- "$data_dir/fixes/theme-preview/"*.sh
 chmod +x -- "$data_dir/fixes/libreoffice/"*.sh
 chmod +x -- "$data_dir/fixes/top-bar/"*.sh
-chmod +x -- "$data_dir/scripts/install-open-vm-tools.sh"
+chmod +x -- "$data_dir/tools/vm-tools/install.sh"
 ln -sfn -- "$data_dir/bin/omarchy-vmware" "$bin_dir/omarchy-vmware"
 
 printf 'Installed omarchy-vmware to %s\n' "$data_dir"
