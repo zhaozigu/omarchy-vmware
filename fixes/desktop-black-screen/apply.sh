@@ -14,6 +14,7 @@ fi
 
 if ovm_has_fix; then
   printf 'Qt Quick software rendering is already enabled.\n'
+  printf 'Recommended: restart the virtual machine to ensure the fix takes full effect.\n'
   exit 0
 fi
 
@@ -37,3 +38,5 @@ if ovm_reload_hyprland; then
   # the environment to future children, but does not relaunch that shell.
   ovm_restart_shell || true
 fi
+
+printf 'Recommended: restart the virtual machine to ensure the fix takes full effect.\n'

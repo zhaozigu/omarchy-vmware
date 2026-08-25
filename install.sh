@@ -41,6 +41,19 @@ chmod +x -- "$data_dir/fixes/top-bar/"*.sh
 chmod +x -- "$data_dir/tools/vm-tools/install.sh"
 ln -sfn -- "$data_dir/bin/omarchy-vmware" "$bin_dir/omarchy-vmware"
 
-printf 'Installed omarchy-vmware to %s\n' "$data_dir"
-printf 'Command: %s/omarchy-vmware\n' "$bin_dir"
-printf 'No Hyprland configuration was changed. Run: omarchy-vmware doctor\n'
+printf '\nomarchy-vmware was installed successfully.\n'
+printf '  Location: %s\n' "$data_dir"
+printf '  Command : %s/omarchy-vmware\n' "$bin_dir"
+printf '\nNo Hyprland settings were changed automatically.\n'
+printf '\nRecommended next steps:\n'
+printf '  1. Check your VMware and Omarchy setup:\n'
+printf '     omarchy-vmware doctor\n'
+printf '  2. Apply the main desktop display fix:\n'
+printf '     omarchy-vmware apply\n'
+printf '\nOptional fixes (run only when needed):\n'
+printf '  Missing top bar       : omarchy-vmware bar apply\n'
+printf '  Invisible mouse cursor: omarchy-vmware cursor apply\n'
+printf '  Broken theme previews : omarchy-vmware preview apply\n'
+printf '  LibreOffice display   : omarchy-vmware libreoffice apply\n'
+printf '  Install Open VM Tools : omarchy-vmware vm-tools install\n'
+printf '\nRun omarchy-vmware --help to see all available commands.\n'
