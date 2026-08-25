@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-repo="${OMARCHY_VMWARE_REPO:-<owner>/omarchy-vmware}"
+repo="${OMARCHY_VMWARE_REPO:-zhaozigu/omarchy-vmware}"
 branch="${OMARCHY_VMWARE_BRANCH:-main}"
 data_dir="${XDG_DATA_HOME:-$HOME/.local/share}/omarchy-vmware"
 bin_dir="${HOME}/.local/bin"
@@ -15,10 +15,6 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" 2>/dev/null && pwd || tr
 if [[ -f "$script_dir/bin/omarchy-vmware" && -f "$script_dir/lib/common.sh" ]]; then
   source_dir="$script_dir"
 else
-  if [[ "$repo" == '<owner>/omarchy-vmware' ]]; then
-    printf 'Set OMARCHY_VMWARE_REPO=github-owner/omarchy-vmware until the repository owner is finalized.\n' >&2
-    exit 1
-  fi
   command -v curl >/dev/null 2>&1 || { printf 'curl is required.\n' >&2; exit 1; }
   tmp_dir="$(mktemp -d)"
   curl -fsSL "https://github.com/${repo}/archive/refs/heads/${branch}.tar.gz" |
