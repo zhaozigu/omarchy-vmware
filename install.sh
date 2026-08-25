@@ -7,12 +7,16 @@ data_dir="${XDG_DATA_HOME:-$HOME/.local/share}/omarchy-vmware"
 bin_dir="${HOME}/.local/bin"
 source_dir=''
 tmp_dir=''
+script_source="${BASH_SOURCE[0]:-}"
+script_dir=''
 
 cleanup() { [[ -z "$tmp_dir" ]] || rm -rf -- "$tmp_dir"; }
 trap cleanup EXIT
 
-script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" 2>/dev/null && pwd || true)"
-if [[ -f "$script_dir/bin/omarchy-vmware" && -f "$script_dir/lib/common.sh" ]]; then
+if [[ -n "$script_source" ]]; then
+  script_dir="$(cd -- "$(dirname -- "$script_source")" 2>/dev/null && pwd || true)"
+fi
+if [[ -n "$script_dir" && -f "$script_dir/bin/omarchy-vmware" && -f "$script_dir/lib/common.sh" ]]; then
   source_dir="$script_dir"
 else
   command -v curl >/dev/null 2>&1 || { printf 'curl is required.\n' >&2; exit 1; }
