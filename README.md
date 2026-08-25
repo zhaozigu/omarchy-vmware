@@ -14,6 +14,35 @@ Make sure 3D graphics acceleration is enabled for the virtual machine. In its
 VMware settings, go to **Display** and check **Accelerate 3D graphics** if it
 is not already enabled.
 
+### If the desktop is blank
+
+If the desktop is blank or you cannot open a graphical terminal, install and
+run this tool from a Linux virtual console (TTY):
+
+1. Click inside the VMware window and press **Ctrl+Alt+F3**. If no login prompt
+   appears, try **Ctrl+Alt+F2** through **Ctrl+Alt+F6**. On some laptops you may
+   also need to hold **Fn**. If VMware captures the shortcut, use its keyboard
+   or send-key menu to send the same keys to the virtual machine.
+2. Log in with your normal Omarchy user account, not `root`. Password characters
+   are not displayed while you type; this is normal.
+3. Install the latest version:
+
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/zhaozigu/omarchy-vmware/main/install.sh | bash
+   ```
+
+4. Check the system and run the complete repair. The full command path works
+   even when the new TTY session has not added `~/.local/bin` to `PATH`:
+
+   ```bash
+   ~/.local/bin/omarchy-vmware doctor
+   ~/.local/bin/omarchy-vmware fix --all
+   ```
+
+The complete repair restarts the virtual machine only when it makes a package
+or repair change. If `curl` reports a network or DNS error, connect the virtual
+machine to the network before retrying.
+
 ## Install
 
 Install the latest version from GitHub:
